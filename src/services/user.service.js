@@ -1,4 +1,4 @@
-const User = require('../models/user.modal.js');
+const User = require('../models/user.model.js');
 
 const createUser = async (data) => {
   try {
