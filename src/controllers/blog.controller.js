@@ -1,12 +1,27 @@
 const blogService = require('../services/blog.service');
+const uploadImage = require('../utils/uploadImages');
 
 const createBlog = async (req, res) => {
   try {
+    const buildImage = await uploadImage(req.files, 'multiple', req.user.email, req.user.password);
+    if(!buildImage && buildImage.length === 0) {
+      return res.status(400).json({error: 'Failed to upload image'});
+    }
     const data = req.body;
+    data.image = buildImage;
+    data.author = req.user._id;
     const blog = await blogService.createBlog(data);
-    res.status(201).json(blog);
+    res.status(201).json({
+      message: 'Blog created successfully',
+      blog
+    });
+    res.send({
+      status: "SUCCESS",
+      imageName: buildImage
+    })
   } catch (error) {
     res.status(400).json({ error: error.message });
+    console.log('error from createBlog', error);
   }
 }
 

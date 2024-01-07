@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ['admin', 'user'],
+    default: 'user'
+  },
+  firebase_uid: {
+    type: String,
+    trim: true,
+    unique: true,
     required: true,
   },
   createdAt: {

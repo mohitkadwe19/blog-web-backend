@@ -33,10 +33,14 @@ const blogSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
-  image: {
-    type: String,
-    trim: true
-  },
+  image:[{
+    url: { type: String, required: true },
+    fileName: { type: String, required: true },
+    size: { type: Number, required: true },
+    mimetype: { type: String, required: true },
+    updatedBy: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+  }],
   dislikes: [{
     type: Schema.Types.ObjectId,
     ref: 'User'

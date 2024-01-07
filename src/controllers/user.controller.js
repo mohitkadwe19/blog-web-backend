@@ -1,11 +1,14 @@
 const userService = require('../services/user.service');
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../utils/jwt.middleware');
+const firebaseService = require('../services/firebase.service');
 
 const createUser = async (req, res) => {
   try {
     const data = req.body;
     data.password = await bcrypt.hash(data.password, 10);
+    const firebaseUser = await firebaseService.createUser(data.email, data.password);
+    data.firebase_uid = firebaseUser.uid;
     const user = await userService.createUser(data);
     res.status(201).json({
       message: 'User created successfully',
@@ -13,6 +16,7 @@ const createUser = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
+    console.log(error);
   }
 }
 
