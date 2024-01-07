@@ -1,6 +1,9 @@
 const express = require('express');
 const blogRouter = express.Router();
 const blogController = require('../controllers/blog.controller');
+const { upload, uploadMultiple } = require('../middleware/multer')
+const multer = require('multer');
+const { auth } = require("../utils/jwt.middleware");
 
 /**
  * @swagger
@@ -20,15 +23,28 @@ const blogController = require('../controllers/blog.controller');
  *               content:
  *                 type: string
  *                 example: "content"
- *               author:
- *                 type: string
- *                 example: "author"
  *               tags:
  *                 type: array
  *                 items:
  *                   type: string
  *                 example: ["tag1", "tag2", "tag3"]
- * 
+ *               image: 
+ *                 type: array
+ *                 items:
+ *                   type: {  url: string,
+ *                            fileName: string,
+ *                            size: number,
+ *                            mimetype: string,
+ *                            updatedBy: string,
+ *                         }
+ *                 example: [{
+ *                   url: "url",
+ *                   fileName: "fileName",
+ *                   size: 123,
+ *                   mimetype: "mimetype",
+ *                   updatedBy: "email"
+ *                    }]
+ *                
  *     responses:
  *       200:
  *         description: Returns the blog that was created
@@ -41,7 +57,17 @@ const blogController = require('../controllers/blog.controller');
  *                   type: string
  *                   example: "Blog created successfully"
  * */
-blogRouter.post('/createBlog', blogController.createBlog);
+blogRouter.post('/createBlog', auth, uploadMultiple, blogController.createBlog);
 
 
+// Error handling middleware
+blogRouter.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // A Multer error occurred when uploading.
+    res.status(500).send(err.message);
+  } else {
+    // An unknown error occurred when uploading.
+    next(err);
+  }
+});
 module.exports = blogRouter;
