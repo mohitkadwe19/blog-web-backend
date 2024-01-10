@@ -1,7 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
 const userController = require("../controllers/user.controller");
-const { auth } = require("../utils/jwt.middleware");
+const { auth } = require("../utils/middleware/auth/jwt.middleware");
 
 /**
  * @swagger
@@ -9,6 +9,7 @@ const { auth } = require("../utils/jwt.middleware");
  *   get:
  *     summary: Get all users
  *     description: Returns a list of all users in the endpoint.
+ *     tags: [User]
  *     responses:
  *       200:
  *         description: Returns a list of all users
@@ -29,6 +30,7 @@ userRouter.get("/getAllUsers", userController.getAllUsers);
  *   get:
  *     summary: Get user by id
  *     description: Returns a user by id in the endpoint.
+ *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id
@@ -56,6 +58,7 @@ userRouter.get("/getUserById/:id", userController.getUserById);
  *   get:
  *     summary: Get user by email
  *     description: Returns a user by email in the endpoint.
+ *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: email
@@ -83,6 +86,7 @@ userRouter.get("/getUserByEmail/:email", userController.getUserByEmail);
  *   post:
  *     summary: Create user
  *     description: Returns a message of success or error in the endpoint.
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:
@@ -125,6 +129,7 @@ userRouter.post("/createUser", userController.createUser);
  *   put:
  *     summary: Update user
  *     description: Returns a message of success or error in the endpoint.
+ *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id
@@ -174,6 +179,7 @@ userRouter.put("/updateUser/:id", userController.updateUser);
  *   post:
  *     summary: Login user
  *     description: Returns a message of success or error in the endpoint.
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:
@@ -208,6 +214,7 @@ userRouter.post("/login", userController.loginUser);
  *   delete:
  *     summary: Delete user
  *     description: Returns a message of success or error in the endpoint.
+ *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id

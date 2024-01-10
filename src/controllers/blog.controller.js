@@ -1,15 +1,17 @@
 const blogService = require('../services/blog.service');
-const uploadImage = require('../utils/uploadImages');
+const uploadImage = require('../utils/multer/uploadImages');
 
 const createBlog = async (req, res) => {
   try {
-    const buildImage = await uploadImage(req.files, 'multiple', req.user.email, req.user.password);
-    if(!buildImage && buildImage.length === 0) {
-      return res.status(400).json({error: 'Failed to upload image'});
-    }
     const data = req.body;
-    data.image = buildImage;
-    data.author = req.user._id;
+    if(req.files && req.files.length > 0) {
+      const buildImage = await uploadImage(req.files, 'multiple', req.user.email, req.user.password);
+      data.image = buildImage;
+      if(!buildImage && buildImage.length === 0) {
+        return res.status(400).json({error: 'Failed to upload image'});
+      }
+    }
+    data.author = req.user._id || req.user.id;
     const blog = await blogService.createBlog(data);
     res.status(201).json({
       message: 'Blog created successfully',
@@ -18,7 +20,7 @@ const createBlog = async (req, res) => {
     res.send({
       status: "SUCCESS",
       imageName: buildImage
-    })
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
     console.log('error from createBlog', error);

@@ -28,8 +28,9 @@ const options = {
   apis: ['./src/routes/*.js'],
 }
 
-const swaggerSpec = swaggerJsdoc(options)
 function swaggerDocs(app, port) {
+  options.definition.servers[0].url = `http://localhost:${port}/`;
+  const swaggerSpec = swaggerJsdoc(options);
   // Swagger Page
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
   // Documentation in JSON format

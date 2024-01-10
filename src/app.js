@@ -1,7 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const cors = require('cors');
-const swaggerDocs = require('./utils/swagger');
+const swaggerDocs = require('./utils/swagger/swagger');
 const userRoute = require('./routes/user.route');
 const blogRoute = require('./routes/blog.route');
 const connectDB = require('./db/conn');

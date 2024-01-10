@@ -1,6 +1,6 @@
 const userService = require('../services/user.service');
 const bcrypt = require('bcrypt');
-const { generateToken } = require('../utils/jwt.middleware');
+const { generateToken } = require('../utils/middleware/auth/jwt.middleware');
 const firebaseService = require('../services/firebase.service');
 
 const createUser = async (req, res) => {
