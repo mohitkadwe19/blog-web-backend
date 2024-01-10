@@ -1,5 +1,5 @@
 const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require('firebase/storage')
-const firebaseService = require('../services/firebase.service');
+const firebaseService = require('../../services/firebase.service');
 
 async function uploadImage(file, quantity, email, password) {
   try {

@@ -1,53 +1,45 @@
 const express = require('express');
 const blogRouter = express.Router();
 const blogController = require('../controllers/blog.controller');
-const { upload, uploadMultiple } = require('../middleware/multer')
+const { upload, uploadMultiple } = require('../utils/multer/multer')
 const multer = require('multer');
-const { auth } = require("../utils/jwt.middleware");
+const { auth } = require("../utils/middleware/auth/jwt.middleware");
 
 /**
  * @swagger
  * /api/blog/createBlog:
  *   post:
- *     summary: Create blog
- *     description: Returns the blog that was created from the database.
+ *     tags:
+ *       - Blog
+ *     summary: Create a blog
+ *     description: Creates a new blog and returns the created blog from the database.
+ *     security:
+ *       - BearerAuth: []
+ *     operationId: createBlog
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
+ *             type: object
  *             properties:
  *               title:
  *                 type: string
- *                 example: "title"
+ *                 description: The title of the blog.
+ *                 example: "My New Blog Post"
  *               content:
  *                 type: string
- *                 example: "content"
+ *                 description: The content of the blog.
+ *                 example: "This is the content of my blog post."
  *               tags:
  *                 type: array
+ *                 description: Tags associated with the blog.
  *                 items:
  *                   type: string
- *                 example: ["tag1", "tag2", "tag3"]
- *               image: 
- *                 type: array
- *                 items:
- *                   type: {  url: string,
- *                            fileName: string,
- *                            size: number,
- *                            mimetype: string,
- *                            updatedBy: string,
- *                         }
- *                 example: [{
- *                   url: "url",
- *                   fileName: "fileName",
- *                   size: 123,
- *                   mimetype: "mimetype",
- *                   updatedBy: "email"
- *                    }]
- *                
+ *                 example: ["Technology", "Innovation", "Startups"]
  *     responses:
  *       200:
- *         description: Returns the blog that was created
+ *         description: Blog created successfully.
  *         content:
  *           application/json:
  *             schema:
@@ -55,8 +47,14 @@ const { auth } = require("../utils/jwt.middleware");
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Blog created successfully"
- * */
+ *                   example: "Blog created successfully."
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: No token, authorization denied.
+ *       500:
+ *         description: Internal server error.
+ */
 blogRouter.post('/createBlog', auth, uploadMultiple, blogController.createBlog);
 
 
