@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const blogRouter = express.Router();
-const blogController = require('../controllers/blog.controller');
-const { upload, uploadMultiple } = require('../utils/multer/multer')
-const multer = require('multer');
+const blogController = require("../controllers/blog.controller");
+const { upload, uploadMultiple } = require("../utils/multer/multer");
+const multer = require("multer");
 const { auth } = require("../utils/middleware/auth/jwt.middleware");
 
 /**
@@ -55,8 +55,19 @@ const { auth } = require("../utils/middleware/auth/jwt.middleware");
  *       500:
  *         description: Internal server error.
  */
-blogRouter.post('/createBlog', auth, uploadMultiple, blogController.createBlog);
+blogRouter.post("/createBlog", auth, uploadMultiple, blogController.createBlog);
 
+/**
+ * @swagger
+ * /api/blog/getAllBlogs:
+ *   get:
+ *     tags:
+ *       - Blog
+ *     summary: Get all blogs
+ *     description: Returns all blogs from the database.
+ * 
+ * */
+blogRouter.get("/getAllBlogs",  blogController.getAllBlogs);
 
 // Error handling middleware
 blogRouter.use((err, req, res, next) => {
