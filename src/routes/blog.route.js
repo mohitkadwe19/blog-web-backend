@@ -65,9 +65,59 @@ blogRouter.post("/createBlog", auth, uploadMultiple, blogController.createBlog);
  *       - Blog
  *     summary: Get all blogs
  *     description: Returns all blogs from the database.
- * 
+ *
  * */
-blogRouter.get("/getAllBlogs",  blogController.getAllBlogs);
+blogRouter.get("/getAllBlogs", blogController.getAllBlogs);
+
+/**
+ * @swagger
+ * /api/blog/getBlogById/{id}:
+ *  get:
+ *     summary: Get blog by id
+ *     description: Returns a message of success or error in the endpoint.
+ *     tags: [Blog]
+ *  parameters:
+ *       - in: blog_id
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Blog id
+ * responses:
+ *       200:
+ *         description: Returns a message of success or error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Get blog by id successfully"
+ *       404:
+ *             description: Blog not found
+ *             content:
+ *                 application/json:
+ *               schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                     type: string
+ *                     example: "Blog not found"
+ *       500:
+ *              description: Blog server error
+ *               content:
+ *                   application/json:
+ *                 schema:
+ *                  type: object
+ *                  properties:
+ *                  message:
+ *                     type: string
+ *                     example: "Blog internal server error"
+ *
+ * */
+
+blogRouter.get("/getBlogById/:id", blogController.getBlogById);
 
 // Error handling middleware
 blogRouter.use((err, req, res, next) => {
