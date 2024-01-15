@@ -94,30 +94,92 @@ blogRouter.get("/getAllBlogs", blogController.getAllBlogs);
  *                 message:
  *                   type: string
  *                   example: "Get blog by id successfully"
- *       404:
- *             description: Blog not found
- *             content:
- *                 application/json:
- *               schema:
- *                type: object
- *                properties:
- *                  message:
- *                     type: string
- *                     example: "Blog not found"
- *       500:
- *              description: Blog server error
- *               content:
- *                   application/json:
- *                 schema:
- *                  type: object
- *                  properties:
- *                  message:
- *                     type: string
- *                     example: "Blog internal server error"
- *
- * */
+ *       400:
+ *         description: Error occurred.
+ */
 
 blogRouter.get("/getBlogById/:id", blogController.getBlogById);
+
+/**
+ * @swagger
+ * /api/blog/updateBlog/{id}:
+ *   put:
+ *     summary: update blog post by id
+ *     description: This endpoint updates a blog post by its ID.
+ *     tags: [Blog]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Blog id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 maxLength: 100
+ *               content:
+ *                 type: string
+ *                 minLength: 20
+ *               author:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               comments:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     text:
+ *                       type: string
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                     author:
+ *                       type: string
+ *               likes:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               image:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     url:
+ *                       type: string
+ *                     fileName:
+ *                       type: string
+ *                     size:
+ *                       type: number
+ *                     mimetype:
+ *                       type: string
+ *                     updatedBy:
+ *                       type: string
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *               dislikes:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               views:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Blog post updated successfully.
+ *       400:
+ *         description: Error occurred.
+ */
+blogRouter.put("/updateBlog/:id", blogController.updateBlog);
 
 // Error handling middleware
 blogRouter.use((err, req, res, next) => {
