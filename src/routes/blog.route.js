@@ -181,6 +181,30 @@ blogRouter.get("/getBlogById/:id", blogController.getBlogById);
  */
 blogRouter.put("/updateBlog/:id", blogController.updateBlog);
 
+/**
+ * @swagger
+ * /api/blog/deleteBlog/{id}:
+ *   delete:
+ *     summary: Delete blog post by id
+ *     description: This endpoint deletes a blog post by its ID.
+ *     tags: [Blog]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the blog post to be deleted.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Blog post deleted successfully.
+ *       404:
+ *         description: Blog post not found.
+ *       500:
+ *         description: Internal server error.
+ */
+blogRouter.delete("/deleteBlog/:id", blogController.deleteBlog);
+
 // Error handling middleware
 blogRouter.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
