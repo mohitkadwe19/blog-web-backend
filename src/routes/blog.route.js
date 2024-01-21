@@ -97,7 +97,6 @@ blogRouter.get("/getAllBlogs", blogController.getAllBlogs);
  *       400:
  *         description: Error occurred.
  */
-
 blogRouter.get("/getBlogById/:id", blogController.getBlogById);
 
 /**
